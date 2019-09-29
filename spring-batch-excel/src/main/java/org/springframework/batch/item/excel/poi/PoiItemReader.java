@@ -47,6 +47,12 @@ public class PoiItemReader<T> extends AbstractExcelItemReader<T> {
         return new PoiSheet(this.workbook.getSheetAt(sheet));
     }
 
+    public void setSheet(final String sheetName){
+        int sheetIndex = workbook.getSheetIndex(sheetName);
+        this.currentSheet = sheetIndex;
+        this.useSpecificSheet = true;
+    }
+
     @Override
     protected int getNumberOfSheets() {
         return this.workbook.getNumberOfSheets();

@@ -42,7 +42,8 @@ public abstract class AbstractExcelItemReader<T> extends AbstractItemCountingIte
     protected final Log logger = LogFactory.getLog(getClass());
     private Resource resource;
     private int linesToSkip = 0;
-    private int currentSheet = 0;
+    protected int currentSheet = 0;
+    protected boolean useSpecificSheet = false;
     private RowMapper<T> rowMapper;
     private RowCallbackHandler skippedRowsCallback;
     private boolean noInput = false;
@@ -72,7 +73,7 @@ public abstract class AbstractExcelItemReader<T> extends AbstractItemCountingIte
                 throw new ExcelFileParseException("Exception parsing Excel file.", e, this.resource.getDescription(),
                         rs.getMetaData().getSheetName(), rs.getCurrentRowIndex(), rs.getCurrentRow());
             }
-        } else {
+        } else if (useSpecificSheet==false) {
             this.currentSheet++;
             if (this.currentSheet >= this.getNumberOfSheets()) {
                 if (logger.isDebugEnabled()) {
@@ -84,6 +85,7 @@ public abstract class AbstractExcelItemReader<T> extends AbstractItemCountingIte
                 return this.doRead();
             }
         }
+        return null;
     }
 
     @Override
